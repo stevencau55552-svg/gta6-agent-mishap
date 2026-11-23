@@ -14,9 +14,16 @@ SENTENCE = (
 
 
 def main() -> None:
+    # Gate guard (RULES.txt): entry.txt must be UTF-8 text of 1 to 240
+    # characters, a single sentence, not only white space. Fail loudly
+    # here rather than shipping an invalid entry to the judge.
+    sentence = SENTENCE.strip()
+    assert 1 <= len(sentence) <= 240, f"sentence is {len(sentence)} chars, gate needs 1-240"
+    assert "\n" not in sentence, "entry must be a single line"
     os.makedirs("/output", exist_ok=True)
     with open("/output/entry.txt", "w", encoding="utf-8") as f:
-        f.write(SENTENCE)
+        f.write(sentence)
+    print(f"wrote {len(sentence)} chars to /output/entry.txt")
 
 
 if __name__ == "__main__":
